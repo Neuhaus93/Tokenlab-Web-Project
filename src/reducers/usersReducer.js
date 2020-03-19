@@ -9,6 +9,9 @@ export default (state = {}, action) => {
     case ActionTypes.CREATE_USER:
       return { ...state, [action.payload.id]: action.payload };
 
+    case ActionTypes.CLEAR_USERS:
+      return {};
+
     default:
       return state;
   }

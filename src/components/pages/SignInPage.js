@@ -1,7 +1,14 @@
 import React from "react";
 import { reset, Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+
+import { logIn, fetchUsers } from "../../actions";
 
 class SignInPage extends React.Component {
+  componentDidMount() {
+    this.props.fetchUsers();
+  }
+
   renderEmailInput = ({ input }) => {
     return (
       <div className="form-group">
@@ -9,7 +16,7 @@ class SignInPage extends React.Component {
         <input
           {...input}
           type="email"
-          className="form-control"
+          className="form-control col-md-4"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
           placeholder="Insira email"
@@ -25,7 +32,7 @@ class SignInPage extends React.Component {
         <input
           {...input}
           type="password"
-          className="form-control"
+          className="form-control col-md-4"
           id="exampleInputPassword1"
           placeholder="Senha"
         />
@@ -34,21 +41,19 @@ class SignInPage extends React.Component {
   };
 
   onSubmit = (formProps, dispatch) => {
-    console.log(formProps);
+    const isSignedIn = () =>
+      new Promise((res, rej) => {
+        dispatch(logIn(formProps));
+        res();
+      });
 
-    // const isSignedIn = () =>
-    //   new Promise((res, rej) => {
-    //     dispatch(tryLoggingIn(formProps));
-    //     res();
-    //   });
-
-    // isSignedIn().then(() => {
-    //   if (this.props.isSignedIn) {
-    //     this.props.history.push("/todos");
-    //   } else {
-    //     dispatch(reset("signInForm"));
-    //   }
-    // });
+    isSignedIn().then(() => {
+      if (this.props.isSignedIn) {
+        this.props.history.push("/events/list");
+      } else {
+        dispatch(reset("signInForm"));
+      }
+    });
   };
 
   render() {
@@ -69,6 +74,10 @@ class SignInPage extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  isSignedIn: state.auth.isSignedIn
+});
+
 export default reduxForm({
   form: "signInForm"
-})(SignInPage);
+})(connect(mapStateToProps, { logIn, fetchUsers })(SignInPage));

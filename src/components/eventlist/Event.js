@@ -2,11 +2,11 @@ import React from "react";
 
 class Event extends React.Component {
   eventDescription = () => (
-    <div className="col-7">
+    <div className="col-md-5">
       <div className="input-group">
         <div className="input-group-prepend">
           <span className="input-group-text">
-            <i class="far fa-calendar-alt"></i>
+            <i className="far fa-calendar-alt"></i>
           </span>
         </div>
         <input type="text" className="form-control" readOnly />
@@ -15,7 +15,7 @@ class Event extends React.Component {
   );
 
   eventDate = () => (
-    <div className="col">
+    <div className="col-md-2">
       <input
         type="date"
         className="form-control"
@@ -27,14 +27,29 @@ class Event extends React.Component {
   );
 
   eventTimeStart = () => (
-    <div className="col">
+    <div className="col-md-1">
       <input type="time" className="form-control" id="startTime" readOnly />
     </div>
   );
 
   eventTimeEnd = () => (
-    <div className="col">
+    <div className="col-md-1">
       <input type="time" className="form-control" id="endTime" readOnly />
+    </div>
+  );
+
+  eventEditAndDelete = () => (
+    <div className="ml-auto">
+      <div className="btn-group" role="group">
+        <button type="button" className="btn btn-secondary">
+          <i className="fas fa-edit mr-2"></i>
+          Editar
+        </button>
+        <button type="button" className="btn btn-dark">
+          <i className="fas fa-trash-alt mr-2"></i>
+          Deletar
+        </button>
+      </div>
     </div>
   );
 
@@ -45,6 +60,7 @@ class Event extends React.Component {
         {this.eventDate()}
         {this.eventTimeStart()}
         {this.eventTimeEnd()}
+        {this.eventEditAndDelete()}
       </div>
     );
   }

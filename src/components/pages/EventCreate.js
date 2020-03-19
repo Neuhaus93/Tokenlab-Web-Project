@@ -1,5 +1,8 @@
 import React from "react";
 import { reset, Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+
+import { createEvent } from "../../actions";
 
 class EventCreate extends React.Component {
   eventDescription = ({ input }) => (
@@ -18,9 +21,10 @@ class EventCreate extends React.Component {
     <div className="form-group col-md-3">
       <label htmlFor="inputState">Categoria</label>
       <select {...input} id="inputState" className="form-control">
-        <option defaultValue="Nada">Nada</option>
+        <option defaultValue="Nada">----</option>
         <option>Trabalho</option>
         <option>Lazer</option>
+        <option>Educação</option>
       </select>
     </div>
   );
@@ -61,12 +65,19 @@ class EventCreate extends React.Component {
     </div>
   );
 
-  onSubmit = (formProps, dispatch) => {
-    console.log(formProps);
+  isValid(formProps) {
+    if (formProps.inputDescription == null || !formProps.email.trim())
+      return false;
 
-    // dispatch(createUser(formProps));
-    // this.props.history.push("/auth/signin");
-    // dispatch(reset("signUpForm"));
+    return true;
+  }
+
+  onSubmit = (formProps, dispatch) => {
+    if (this.isValid) return;
+
+    dispatch(createEvent(formProps));
+    this.props.history.push("/events/list");
+    dispatch(reset("signUpForm"));
   };
 
   render() {
@@ -75,7 +86,7 @@ class EventCreate extends React.Component {
         <div className="jumbotron">
           <h1 className="display-6 text-center">Criar Evento</h1>
           <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
-            <div className="form-row mb-3">
+            <div className="form-row mt-4 mb-3">
               <Field
                 name="inputDescription"
                 component={this.eventDescription}
@@ -83,7 +94,7 @@ class EventCreate extends React.Component {
               <Field name="inputCategory" component={this.eventCategory} />
             </div>
 
-            <div className="form-row">
+            <div className="form-row mb-3">
               <Field name="inputDate" component={this.eventDate} />
               <Field name="inputStartTime" component={this.eventTimeStart} />
               <Field name="inputEndTime" component={this.eventTimeEnd} />
@@ -101,4 +112,4 @@ class EventCreate extends React.Component {
 
 export default reduxForm({
   form: "createEventForm"
-})(EventCreate);
+})(connect(null, { createEvent })(EventCreate));

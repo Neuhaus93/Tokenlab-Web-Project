@@ -11,8 +11,8 @@ const visibilityFilter = (state = "", action) => {
 
 export default combineReducers({
   form: formReducer,
-  eventsReducer,
-  authReducer,
-  usersReducer,
+  events: eventsReducer,
+  auth: authReducer,
+  users: usersReducer,
   visibilityFilter
 });

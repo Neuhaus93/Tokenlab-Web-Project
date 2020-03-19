@@ -1,5 +1,8 @@
 import React from "react";
 import { reset, Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+
+import { createUser } from "../../actions";
 
 class SignUpPage extends React.Component {
   renderEmailInput = ({ input }) => {
@@ -33,7 +36,7 @@ class SignUpPage extends React.Component {
 
   renderPasswordInput = ({ input }) => {
     return (
-      <div className="form-group">
+      <div className="form-group mb-3">
         <label>Senha</label>
         <input
           {...input}
@@ -46,12 +49,28 @@ class SignUpPage extends React.Component {
     );
   };
 
-  onSubmit = (formProps, dispatch) => {
+  isValid(formProps) {
+    if (
+      formProps.email == null ||
+      !formProps.email.trim() ||
+      formProps.userName == null ||
+      !formProps.userName.trim() ||
+      formProps.password == null ||
+      !formProps.password.trim()
+    )
+      return false;
+
+    return true;
+  }
+
+  onSubmit = async (formProps, dispatch) => {
+    if (this.isValid) return;
+
     console.log(formProps);
 
-    // dispatch(createUser(formProps));
-    // this.props.history.push("/auth/signin");
-    // dispatch(reset("signUpForm"));
+    await dispatch(createUser(formProps));
+    this.props.history.push("/auth/signin");
+    dispatch(reset("signUpForm"));
   };
 
   render() {
@@ -75,4 +94,4 @@ class SignUpPage extends React.Component {
 
 export default reduxForm({
   form: "signUpForm"
-})(SignUpPage);
+})(connect(null, { createUser })(SignUpPage));

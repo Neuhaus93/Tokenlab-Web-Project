@@ -1,28 +1,54 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-const Header = () => {
-  const logOutButton = (
-    <Link to="/" type="button" className="btn btn-danger my-2 my-sm-0">
+import { logOut } from "../actions";
+
+class Header extends React.Component {
+  logOutButton = () => (
+    <Link
+      to="/"
+      type="button"
+      onClick={this.props.onClick}
+      className="btn btn-danger my-2 my-sm-0"
+      style={{ visibility: `${this.props.isSignedIn ? "" : "hidden"}` }}
+    >
       Log out
     </Link>
   );
 
-  return (
-    <nav className="navbar navbar-dark bg-dark d-flex justify-content-around">
-      <button
-        className="navbar-brand link-button"
-        style={{
-          backgroundColor: "transparent",
-          border: "none"
-        }}
-      >
-        Calendário
-      </button>
-      <span className="navbar-brand">Lucas</span>
-      <span>{logOutButton}</span>
-    </nav>
-  );
-};
+  render() {
+    return (
+      <nav className="navbar navbar-dark bg-dark d-flex justify-content-around">
+        {this.props.isSignedIn ? (
+          <button
+            className="navbar-brand link-button"
+            style={{
+              backgroundColor: "transparent",
+              border: "none"
+            }}
+          >
+            Calendário
+          </button>
+        ) : (
+          <Link to="/" className="navbar-brand">
+            Calendário
+          </Link>
+        )}
+        <span className="navbar-brand">{this.props.userName}</span>
+        <span>{this.logOutButton()}</span>
+      </nav>
+    );
+  }
+}
 
-export default Header;
+const mapStateToProps = state => ({
+  isSignedIn: state.auth.isSignedIn,
+  userName: state.auth.userName
+});
+
+const mapDispatchToProps = dispatch => ({
+  onClick: () => dispatch(logOut())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

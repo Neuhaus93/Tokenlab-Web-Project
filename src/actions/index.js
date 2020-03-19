@@ -24,14 +24,64 @@ export const fetchEvents = () => async dispatch => {
 };
 
 /*
+ * Users
+ */
+
+export const createUser = formValues => async (dispatch, getState) => {
+  const response = await db.post("/users", {
+    ...formValues
+  });
+
+  dispatch({
+    type: ActionTypes.CREATE_USER,
+    payload: response.data
+  });
+};
+
+export const fetchUsers = () => async dispatch => {
+  const response = await db.get("/users");
+
+  dispatch({ type: ActionTypes.FETCH_USERS, payload: response.data });
+};
+
+/*
  * Auth
  */
+
+export const logIn = loginInfo => async (dispatch, getState) => {
+  const users = Object.values(getState().users);
+  console.log(loginInfo, users);
+  const validUser = users.filter(
+    user =>
+      user.email === loginInfo.loginEmail &&
+      user.password === loginInfo.loginPassword
+  );
+  console.log(validUser);
+  const userName = validUser.length !== 0 ? validUser[0].userName : null;
+  const userId = validUser.length !== 0 ? validUser[0].id : null;
+
+  if (validUser.length !== 0) {
+    dispatch({
+      type: ActionTypes.LOG_IN,
+      userName: userName,
+      userId: userId
+    });
+    dispatch({
+      type: ActionTypes.CLEAR_USERS
+    });
+    dispatch({
+      type: ActionTypes.FETCH_EVENTS
+    });
+  }
+};
 
 export const logOut = () => ({
   type: ActionTypes.LOG_OUT
 });
 
 // ----------------------
+
+export const userActions = {};
 
 export const ActionTypes = {
   /*
@@ -48,6 +98,7 @@ export const ActionTypes = {
    */
   CREATE_USER: "CREATE_USER",
   FETCH_USERS: "FETCH_USERS",
+  CLEAR_USERS: "CLEAR_USERS",
   /*
    * Auth
    */
