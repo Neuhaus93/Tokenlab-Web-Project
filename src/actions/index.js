@@ -6,11 +6,6 @@ import db from "../apis/database";
 
 export const createEvent = formValues => async (dispatch, getState) => {
   const { userId } = getState().auth;
-  formValues.category =
-    !formValues.category || formValues.category === "----"
-      ? "nada"
-      : formValues.category;
-  formValues.category = formValues.category.toLowerCase();
   const response = await db.post("/events", {
     userId,
     ...formValues
@@ -20,6 +15,24 @@ export const createEvent = formValues => async (dispatch, getState) => {
     type: ActionTypes.CREATE_EVENT,
     payload: response.data
   });
+};
+
+export const editEvent = (id, formValues) => async dispatch => {
+  const response = await db.patch(`/events/${id}`, formValues);
+
+  dispatch({ type: ActionTypes.EDIT_EVENT, payload: response.data });
+};
+
+export const deleteEvent = id => async dispatch => {
+  await db.delete(`/events/${id}`);
+
+  dispatch({ type: ActionTypes.DELETE_EVENT, payload: id });
+};
+
+export const fetchEvent = id => async dispatch => {
+  const response = await db.get(`/events/${id}`);
+
+  dispatch({ type: ActionTypes.FETCH_EVENT, payload: response.data });
 };
 
 export const fetchEvents = () => async dispatch => {

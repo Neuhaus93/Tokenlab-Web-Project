@@ -15,7 +15,7 @@ class EventCreate extends React.Component {
       <div className="container">
         <div className="jumbotron">
           <h1 className="display-6 text-center">Criar Evento</h1>
-          <EventForm onSubmit={this.onSubmit} />
+          <EventForm onSubmit={this.onSubmit} buttonText="Criar" />
         </div>
       </div>
     );

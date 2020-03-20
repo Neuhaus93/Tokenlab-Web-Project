@@ -7,6 +7,7 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import EventListPage from "./pages/EventListPage";
 import EventCreate from "./pages/EventCreate";
+import EventEdit from "./pages/EventEdit";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/auth/signup" exact component={SignUpPage} />
           <Route path="/events/list" exact component={EventListPage} />
           <Route path="/events/new" exact component={EventCreate} />
+          <Route path="/events/edit/:id" exact component={EventEdit} />
         </div>
       </BrowserRouter>
     </div>

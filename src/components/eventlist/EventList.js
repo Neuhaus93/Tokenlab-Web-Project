@@ -2,7 +2,7 @@ import React from "react";
 import Event from "./Event";
 import { Link } from "react-router-dom";
 
-const EventList = ({ events }) => {
+const EventList = ({ events, deleteEvent }) => {
   const titleMsg = `${
     events.length === 0
       ? "Você ainda não possui nenhum evento criado"
@@ -27,7 +27,11 @@ const EventList = ({ events }) => {
         {renderIfEmpty()}
 
         {events.map(event => (
-          <Event key={event.id} {...event} />
+          <Event
+            key={event.id}
+            {...event}
+            onDeleteClick={() => deleteEvent(event.id)}
+          />
         ))}
 
         <Link to="/events/new" className="btn btn-primary mt-4">

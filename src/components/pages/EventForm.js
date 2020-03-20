@@ -18,7 +18,7 @@ class EventForm extends React.Component {
     <div className="form-group col-md-3">
       <label htmlFor="inputState">Categoria</label>
       <select {...input} id="inputState" className="form-control">
-        <option defaultValue="Nada">----</option>
+        <option>----</option>
         <option>Trabalho</option>
         <option>Lazer</option>
         <option>Educação</option>
@@ -96,7 +96,7 @@ class EventForm extends React.Component {
         </div>
 
         <button type="submit" className="btn btn-primary">
-          Cadastre
+          {this.props.buttonText}
         </button>
       </form>
     );
