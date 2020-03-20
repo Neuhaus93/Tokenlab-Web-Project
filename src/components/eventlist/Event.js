@@ -1,40 +1,79 @@
 import React from "react";
 
 class Event extends React.Component {
+  eventTag = () => {
+    switch (this.props.category) {
+      case "trabalho":
+        return "fas fa-briefcase";
+
+      case "lazer":
+        return "far fa-grin-beam";
+
+      case "educação":
+        return "fas fa-book";
+
+      default:
+        return "far fa-calendar-alt";
+    }
+  };
+
   eventDescription = () => (
     <div className="col-md-5">
       <div className="input-group">
         <div className="input-group-prepend">
-          <span className="input-group-text">
-            <i className="far fa-calendar-alt"></i>
+          <span
+            className="input-group-text"
+            data-toggle="tooltip"
+            dataPlacement="left"
+            title="Tooltip"
+          >
+            <i className={`${this.eventTag()}`}></i>
           </span>
         </div>
-        <input type="text" className="form-control" readOnly />
+        <input
+          type="text"
+          className="form-control"
+          value={this.props.description}
+          readOnly
+        />
       </div>
     </div>
   );
 
   eventDate = () => (
-    <div className="col-md-2">
+    <div className="mr-auto">
       <input
         type="date"
         className="form-control"
         id="eventDate"
         name="eventDate"
+        value={this.props.date}
         readOnly
       />
     </div>
   );
 
   eventTimeStart = () => (
-    <div className="col-md-1">
-      <input type="time" className="form-control" id="startTime" readOnly />
+    <div className="mr-auto">
+      <input
+        type="time"
+        className="form-control"
+        id="startTime"
+        value={this.props.startTime}
+        readOnly
+      />
     </div>
   );
 
   eventTimeEnd = () => (
-    <div className="col-md-1">
-      <input type="time" className="form-control" id="endTime" readOnly />
+    <div className="mr-auto">
+      <input
+        type="time"
+        className="form-control"
+        id="endTime"
+        value={this.props.endTime}
+        readOnly
+      />
     </div>
   );
 
@@ -55,7 +94,8 @@ class Event extends React.Component {
 
   render() {
     return (
-      <div className="form-row align-items-center mb-1">
+      // <div className="form-row align-items-center mb-1">
+      <div className="d-flex flex-wrap mb-2">
         {this.eventDescription()}
         {this.eventDate()}
         {this.eventTimeStart()}

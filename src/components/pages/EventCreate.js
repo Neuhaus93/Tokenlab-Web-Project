@@ -65,17 +65,25 @@ class EventCreate extends React.Component {
     </div>
   );
 
-  isValid(formProps) {
-    if (formProps.inputDescription == null || !formProps.email.trim())
-      return false;
+  isValid = formProps => {
+    const isNotValid =
+      formProps.description == null ||
+      !formProps.description.trim() ||
+      formProps.date == null ||
+      !formProps.date.trim() ||
+      formProps.startTime == null ||
+      !formProps.startTime.trim() ||
+      formProps.endTime == null ||
+      !formProps.endTime.trim();
+    console.log(formProps);
+    return !isNotValid;
+  };
 
-    return true;
-  }
+  onSubmit = async (formProps, dispatch) => {
+    if (!this.isValid(formProps)) return;
+    // console.log("Is Valid");
 
-  onSubmit = (formProps, dispatch) => {
-    if (this.isValid) return;
-
-    dispatch(createEvent(formProps));
+    await dispatch(createEvent(formProps));
     this.props.history.push("/events/list");
     dispatch(reset("signUpForm"));
   };
@@ -87,17 +95,14 @@ class EventCreate extends React.Component {
           <h1 className="display-6 text-center">Criar Evento</h1>
           <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
             <div className="form-row mt-4 mb-3">
-              <Field
-                name="inputDescription"
-                component={this.eventDescription}
-              />
-              <Field name="inputCategory" component={this.eventCategory} />
+              <Field name="description" component={this.eventDescription} />
+              <Field name="category" component={this.eventCategory} />
             </div>
 
             <div className="form-row mb-3">
-              <Field name="inputDate" component={this.eventDate} />
-              <Field name="inputStartTime" component={this.eventTimeStart} />
-              <Field name="inputEndTime" component={this.eventTimeEnd} />
+              <Field name="date" component={this.eventDate} />
+              <Field name="startTime" component={this.eventTimeStart} />
+              <Field name="endTime" component={this.eventTimeEnd} />
             </div>
 
             <button type="submit" className="btn btn-primary">

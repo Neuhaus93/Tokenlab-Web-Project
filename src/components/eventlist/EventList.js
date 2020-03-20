@@ -27,7 +27,7 @@ const EventList = ({ events }) => {
         {renderIfEmpty()}
 
         {events.map(event => (
-          <Event key={event.id} />
+          <Event key={event.id} {...event} />
         ))}
 
         <Link to="/events/new" className="btn btn-primary mt-4">
@@ -37,12 +37,7 @@ const EventList = ({ events }) => {
     </div>
   );
 
-  return (
-    <div>
-      {console.log(events.length)}
-      {renderCard()}
-    </div>
-  );
+  return <div>{renderCard()}</div>;
 };
 
 export default EventList;

@@ -6,6 +6,11 @@ import db from "../apis/database";
 
 export const createEvent = formValues => async (dispatch, getState) => {
   const { userId } = getState().auth;
+  formValues.category =
+    !formValues.category || formValues.category === "----"
+      ? "nada"
+      : formValues.category;
+  formValues.category = formValues.category.toLowerCase();
   const response = await db.post("/events", {
     userId,
     ...formValues
@@ -50,13 +55,11 @@ export const fetchUsers = () => async dispatch => {
 
 export const logIn = loginInfo => async (dispatch, getState) => {
   const users = Object.values(getState().users);
-  console.log(loginInfo, users);
   const validUser = users.filter(
     user =>
       user.email === loginInfo.loginEmail &&
       user.password === loginInfo.loginPassword
   );
-  console.log(validUser);
   const userName = validUser.length !== 0 ? validUser[0].userName : null;
   const userId = validUser.length !== 0 ? validUser[0].id : null;
 
