@@ -2,6 +2,7 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 
 import { Link } from "react-router-dom";
+import Modal from "../Modal";
 
 class Event extends React.Component {
   eventTag = () => {
@@ -77,14 +78,11 @@ class Event extends React.Component {
   );
 
   eventEditAndDelete = () => {
-    // console.log(this.props.id);
-
     return (
       <div className="ml-auto">
         <div className="btn-group" role="group">
           <Link
-            onClick={() => console.log(this.props)}
-            // to={`/events/edit/${this.props.id}`}
+            to={`/events/edit/${this.props.id}`}
             className="btn btn-secondary"
           >
             <i className="fas fa-edit mr-2"></i>
@@ -94,58 +92,13 @@ class Event extends React.Component {
             type="button"
             className="btn btn-dark"
             data-toggle="modal"
-            data-target="#modalCenter"
+            data-target={`#modalCenter${this.props.id}`}
           >
             <i className="fas fa-trash-alt mr-2"></i>
             Deletar
           </button>
 
-          {/* <!-- Modal --> */}
-          <div
-            className="modal fade"
-            id="modalCenter"
-            tabIndex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog modal-dialog-centered" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Deletar evento?</h5>
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  Tem certeza que deseja deletar esse evento?
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                    Fechar
-                  </button>
-                  <button
-                    data-dismiss="modal"
-                    type="button"
-                    className="btn btn-danger"
-                    // onClick={this.props.onDeleteClick}
-                    onClick={() => console.log(this.props)}
-                  >
-                    Deletar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Modal eventId={this.props.id} />
         </div>
       </div>
     );
