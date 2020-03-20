@@ -1,4 +1,5 @@
 import React from "react";
+import ReactTooltip from "react-tooltip";
 
 class Event extends React.Component {
   eventTag = () => {
@@ -23,10 +24,9 @@ class Event extends React.Component {
         <div className="input-group-prepend">
           <span
             className="input-group-text"
-            data-toggle="tooltip"
-            dataPlacement="left"
-            title="Tooltip"
+            data-tip={this.props.category.replace(/^\w/, c => c.toUpperCase())}
           >
+            <ReactTooltip place="left" effect="solid" />
             <i className={`${this.eventTag()}`}></i>
           </span>
         </div>
