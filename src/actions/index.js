@@ -35,17 +35,19 @@ export const fetchEvent = id => async dispatch => {
   dispatch({ type: ActionTypes.FETCH_EVENT, payload: response.data });
 };
 
-export const fetchEvents = () => async dispatch => {
+export const fetchEvents = () => async (dispatch, getState) => {
+  const { userId } = getState().auth;
   const response = await db.get("/events");
+  const newResponse = response.data.filter(e => userId === e.userId);
 
-  dispatch({ type: ActionTypes.FETCH_EVENTS, payload: response.data });
+  dispatch({ type: ActionTypes.FETCH_EVENTS, payload: newResponse });
 };
 
 /*
  * Users
  */
 
-export const createUser = formValues => async (dispatch, getState) => {
+export const createUser = formValues => async dispatch => {
   const response = await db.post("/users", {
     ...formValues
   });
@@ -96,8 +98,6 @@ export const logOut = () => ({
 });
 
 // ----------------------
-
-export const userActions = {};
 
 export const ActionTypes = {
   /*

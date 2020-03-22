@@ -75,7 +75,7 @@ class EventForm extends React.Component {
     return !isNotValid;
   };
 
-  onSubmit = (formProps, dispatch) => {
+  onSubmit = formProps => {
     if (!this.isValid(formProps)) return;
     // console.log("Is Valid");
     this.props.onSubmit(formProps);

@@ -15,6 +15,9 @@ export default (state = {}, action) => {
     case ActionTypes.DELETE_EVENT:
       return _.omit(state, action.payload);
 
+    case ActionTypes.LOG_OUT:
+      return {};
+
     default:
       return state;
   }
