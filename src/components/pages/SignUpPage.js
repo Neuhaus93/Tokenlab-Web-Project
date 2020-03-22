@@ -50,22 +50,19 @@ class SignUpPage extends React.Component {
   };
 
   isValid(formProps) {
-    if (
+    const isNotValid =
       formProps.email == null ||
       !formProps.email.trim() ||
       formProps.userName == null ||
       !formProps.userName.trim() ||
       formProps.password == null ||
-      !formProps.password.trim()
-    )
-      return false;
+      !formProps.password.trim();
 
-    return true;
+    return !isNotValid;
   }
 
   onSubmit = async (formProps, dispatch) => {
-    if (this.isValid) return;
-
+    if (!this.isValid) return;
     console.log(formProps);
 
     await dispatch(createUser(formProps));

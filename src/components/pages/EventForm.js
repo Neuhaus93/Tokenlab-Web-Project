@@ -1,5 +1,5 @@
 import React from "react";
-import { reset, Field, reduxForm } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 
 class EventForm extends React.Component {
   eventDescription = ({ input }) => (

@@ -11,20 +11,22 @@ class HomePage extends React.Component {
             Seja bem vindo ao calendário de eventos
           </p>
 
-          <Link
-            type="button"
-            to="/auth/signin"
-            className="btn btn-primary btn-lg btn-block"
-          >
-            Fazer Login
-          </Link>
-          <Link
-            type="button"
-            to="/auth/signup"
-            className="btn btn-danger btn-lg btn-block"
-          >
-            Fazer Cadastro
-          </Link>
+          <div className="d-flex flex-column justify-content-around">
+            <Link
+              type="button"
+              to="/auth/signin"
+              className="btn btn-primary btn-lg mb-2"
+            >
+              Fazer Login
+            </Link>
+            <Link
+              type="button"
+              to="/auth/signup"
+              className="btn btn-danger btn-lg"
+            >
+              Fazer Cadastro
+            </Link>
+          </div>
         </div>
       </div>
     );
