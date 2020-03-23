@@ -2,6 +2,8 @@ import React from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 
+// import ModalEvent from "../ModalEvent";
+
 class EventForm extends React.Component {
   isAvailable = formProps => {
     const { date, startTime, endTime } = formProps;
@@ -26,17 +28,13 @@ class EventForm extends React.Component {
         ) {
           available = false;
           break;
-        }
-
-        if (
+        } else if (
           toNumber(endTime) > toNumber(e.endTime) &&
           toNumber(startTime) < toNumber(e.endTime)
         ) {
           available = false;
           break;
-        }
-
-        if (
+        } else if (
           toNumber(startTime) > toNumber(e.startTime) &&
           toNumber(endTime) < toNumber(e.endTime)
         ) {
@@ -128,7 +126,7 @@ class EventForm extends React.Component {
 
   onSubmit = formProps => {
     if (!this.isAvailable(formProps)) {
-      console.log("not Available!");
+      console.log("Not Available!");
       return;
     }
     // console.log("Is Valid");
@@ -177,7 +175,7 @@ const validate = formValues => {
     errors.startTime = "Você deve inserir uma hora inicial";
   }
 
-  if (formValues.startTime != undefined && formValues.endTime != undefined) {
+  if (formValues.startTime !== undefined && formValues.endTime !== undefined) {
     if (toNumber(formValues.startTime) >= toNumber(formValues.endTime)) {
       errors.startTime = "Hora inicial deve ser menor que a final";
     }

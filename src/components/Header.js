@@ -20,21 +20,12 @@ class Header extends React.Component {
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark d-flex justify-content-around">
-        {this.props.isSignedIn ? (
-          <button
-            className="navbar-brand link-button"
-            style={{
-              backgroundColor: "transparent",
-              border: "none"
-            }}
-          >
-            Calendário
-          </button>
-        ) : (
-          <Link to="/" className="navbar-brand">
-            Calendário
-          </Link>
-        )}
+        <Link
+          to={`${this.props.isSignedIn ? "/events/list" : "/"}`}
+          className="navbar-brand"
+        >
+          Calendário
+        </Link>
         <span className="navbar-brand">{this.props.userName}</span>
         <span>{this.logOutButton()}</span>
       </nav>

@@ -6,6 +6,8 @@ import db from "../apis/database";
 
 export const createEvent = formValues => async (dispatch, getState) => {
   const { userId } = getState().auth;
+  formValues.category =
+    formValues.category === "----" ? "Sem Categoria" : formValues.category;
   const response = await db.post("/events", {
     userId,
     ...formValues
