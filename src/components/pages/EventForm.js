@@ -1,16 +1,77 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
 
 class EventForm extends React.Component {
-  eventDescription = ({ input }) => (
+  isAvailable = formProps => {
+    const { date, startTime, endTime } = formProps;
+
+    const toNumber = time => {
+      const temp = time.split(":");
+      return parseFloat(parseInt(temp[0]) + parseInt(temp[1]) / 60);
+    };
+
+    if (toNumber(startTime) >= toNumber(endTime)) {
+      return false;
+    }
+
+    let available = true;
+
+    for (let i = 0; i < this.props.events.length; i++) {
+      const e = this.props.events[i];
+      if (date === e.date) {
+        if (
+          toNumber(startTime) < toNumber(e.startTime) &&
+          toNumber(endTime) > toNumber(e.startTime)
+        ) {
+          available = false;
+          break;
+        }
+
+        if (
+          toNumber(endTime) > toNumber(e.endTime) &&
+          toNumber(startTime) < toNumber(e.endTime)
+        ) {
+          available = false;
+          break;
+        }
+
+        if (
+          toNumber(startTime) > toNumber(e.startTime) &&
+          toNumber(endTime) < toNumber(e.endTime)
+        ) {
+          available = false;
+          break;
+        }
+      }
+    }
+
+    return available;
+  };
+
+  renderError = ({ error, touched }) => {
+    if (touched && error) {
+      return (
+        <div>
+          <em style={{ color: "red", marginLeft: "5px", fontSize: "0.9rem" }}>
+            {error}
+          </em>
+        </div>
+      );
+    }
+  };
+
+  eventDescription = ({ input, meta }) => (
     <div className="form-group col-md-6">
       <label htmlFor="inputCity">Descrição</label>
       <input
         {...input}
         type="text"
+        autoComplete="off"
         className="form-control"
         placeholder="Descrição do evento"
       />
+      {this.renderError(meta)}
     </div>
   );
 
@@ -26,7 +87,7 @@ class EventForm extends React.Component {
     </div>
   );
 
-  eventDate = ({ input }) => (
+  eventDate = ({ input, meta }) => (
     <div className="form-group col-md-3">
       <label htmlFor="inputEventDate">Data do evento</label>
       <input
@@ -35,10 +96,11 @@ class EventForm extends React.Component {
         className="form-control"
         id="inputEventDate"
       />
+      {this.renderError(meta)}
     </div>
   );
 
-  eventTimeStart = ({ input }) => (
+  eventTimeStart = ({ input, meta }) => (
     <div className="form-group col-md-2">
       <label htmlFor="inputStartTime">Hora de Início</label>
       <input
@@ -47,10 +109,11 @@ class EventForm extends React.Component {
         className="form-control"
         id="inputStartTime"
       />
+      {this.renderError(meta)}
     </div>
   );
 
-  eventTimeEnd = ({ input }) => (
+  eventTimeEnd = ({ input, meta }) => (
     <div className="form-group col-md-2">
       <label htmlFor="inputEndTime">Hora de Término</label>
       <input
@@ -59,24 +122,15 @@ class EventForm extends React.Component {
         className="form-control"
         id="inputEndTime"
       />
+      {this.renderError(meta)}
     </div>
   );
 
-  isValid = formProps => {
-    const isNotValid =
-      formProps.description == null ||
-      !formProps.description.trim() ||
-      formProps.date == null ||
-      !formProps.date.trim() ||
-      formProps.startTime == null ||
-      !formProps.startTime.trim() ||
-      formProps.endTime == null ||
-      !formProps.endTime.trim();
-    return !isNotValid;
-  };
-
   onSubmit = formProps => {
-    if (!this.isValid(formProps)) return;
+    if (!this.isAvailable(formProps)) {
+      console.log("not Available!");
+      return;
+    }
     // console.log("Is Valid");
     this.props.onSubmit(formProps);
   };
@@ -103,6 +157,44 @@ class EventForm extends React.Component {
   }
 }
 
+const validate = formValues => {
+  const errors = {};
+
+  const toNumber = time => {
+    const temp = time.split(":");
+    return parseFloat(parseInt(temp[0]) + parseInt(temp[1]) / 60);
+  };
+
+  if (formValues.description == null || !formValues.description.trim()) {
+    errors.description = "Você deve inserir uma descrição";
+  }
+
+  if (formValues.date == null || !formValues.date.trim()) {
+    errors.date = "Você deve inserir uma data";
+  }
+
+  if (formValues.startTime == null || !formValues.startTime.trim()) {
+    errors.startTime = "Você deve inserir uma hora inicial";
+  }
+
+  if (formValues.startTime != undefined && formValues.endTime != undefined) {
+    if (toNumber(formValues.startTime) >= toNumber(formValues.endTime)) {
+      errors.startTime = "Hora inicial deve ser menor que a final";
+    }
+  }
+
+  if (formValues.endTime == null || !formValues.endTime.trim()) {
+    errors.endTime = "Você deve inserir uma hora final";
+  }
+
+  return errors;
+};
+
+const mapStateToProps = state => ({
+  events: Object.values(state.events)
+});
+
 export default reduxForm({
-  form: "eventForm"
-})(EventForm);
+  form: "eventForm",
+  validate
+})(connect(mapStateToProps)(EventForm));

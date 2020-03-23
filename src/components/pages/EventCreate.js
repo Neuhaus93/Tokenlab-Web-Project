@@ -5,54 +5,54 @@ import { createEvent } from "../../actions";
 import EventForm from "./EventForm";
 
 class EventCreate extends React.Component {
-  toNumber = time => {
-    const temp = time.split(":");
-    return parseFloat(parseInt(temp[0]) + parseInt(temp[1]) / 60);
-  };
+  // toNumber = time => {
+  //   const temp = time.split(":");
+  //   return parseFloat(parseInt(temp[0]) + parseInt(temp[1]) / 60);
+  // };
 
-  isValidDate = formProps => {
-    const { date, startTime, endTime } = formProps;
+  // isValidDate = formProps => {
+  //   const { date, startTime, endTime } = formProps;
 
-    if (this.toNumber(startTime) >= this.toNumber(endTime)) {
-      return false;
-    }
+  //   if (this.toNumber(startTime) >= this.toNumber(endTime)) {
+  //     return false;
+  //   }
 
-    let validDate = true;
+  //   let validDate = true;
 
-    for (let i = 0; i < this.props.events.length; i++) {
-      const e = this.props.events[i];
-      if (date === e.date) {
-        if (
-          this.toNumber(startTime) < this.toNumber(e.startTime) &&
-          this.toNumber(endTime) > this.toNumber(e.startTime)
-        ) {
-          validDate = false;
-          break;
-        }
+  //   for (let i = 0; i < this.props.events.length; i++) {
+  //     const e = this.props.events[i];
+  //     if (date === e.date) {
+  //       if (
+  //         this.toNumber(startTime) < this.toNumber(e.startTime) &&
+  //         this.toNumber(endTime) > this.toNumber(e.startTime)
+  //       ) {
+  //         validDate = false;
+  //         break;
+  //       }
 
-        if (
-          this.toNumber(endTime) > this.toNumber(e.endTime) &&
-          this.toNumber(startTime) < this.toNumber(e.endTime)
-        ) {
-          validDate = false;
-          break;
-        }
+  //       if (
+  //         this.toNumber(endTime) > this.toNumber(e.endTime) &&
+  //         this.toNumber(startTime) < this.toNumber(e.endTime)
+  //       ) {
+  //         validDate = false;
+  //         break;
+  //       }
 
-        if (
-          this.toNumber(startTime) > this.toNumber(e.startTime) &&
-          this.toNumber(endTime) < this.toNumber(e.endTime)
-        ) {
-          validDate = false;
-          break;
-        }
-      }
-    }
+  //       if (
+  //         this.toNumber(startTime) > this.toNumber(e.startTime) &&
+  //         this.toNumber(endTime) < this.toNumber(e.endTime)
+  //       ) {
+  //         validDate = false;
+  //         break;
+  //       }
+  //     }
+  //   }
 
-    return validDate;
-  };
+  //   return validDate;
+  // };
 
   onSubmit = async formProps => {
-    if (!this.isValidDate(formProps)) return;
+    // if (!this.isValidDate(formProps)) return;
     await this.props.createEvent(formProps);
     this.props.history.push("/events/list");
   };
