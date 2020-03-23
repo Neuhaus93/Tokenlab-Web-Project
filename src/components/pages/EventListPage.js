@@ -10,6 +10,7 @@ class EventListPage extends React.Component {
   }
 
   render() {
+    if (!this.props.isSignedIn) this.props.history.push("/");
     return (
       <div className="container" style={{ marginTop: "20px" }}>
         <VisibleEvents />
@@ -18,4 +19,8 @@ class EventListPage extends React.Component {
   }
 }
 
-export default connect(null, { fetchEvents })(EventListPage);
+const mapStateToProps = state => ({
+  isSignedIn: state.auth.isSignedIn
+});
+
+export default connect(mapStateToProps, { fetchEvents })(EventListPage);

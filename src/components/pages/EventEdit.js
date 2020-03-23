@@ -16,6 +16,7 @@ class EventEdit extends React.Component {
   };
 
   render() {
+    if (!this.props.isSignedIn) this.props.history.push("/");
     return (
       <div className="container">
         <div className="jumbotron">
@@ -39,7 +40,8 @@ class EventEdit extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  event: state.events[ownProps.match.params.id]
+  event: state.events[ownProps.match.params.id],
+  isSignedIn: state.auth.isSignedIn
 });
 
 export default connect(mapStateToProps, { fetchEvent, editEvent })(EventEdit);
