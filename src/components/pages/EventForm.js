@@ -27,18 +27,21 @@ class EventForm extends React.Component {
           toNumber(startTime) < toNumber(e.startTime) &&
           toNumber(endTime) > toNumber(e.startTime)
         ) {
+          this.renderConcurrentEvent(e);
           available = false;
           break;
         } else if (
           toNumber(endTime) > toNumber(e.endTime) &&
           toNumber(startTime) < toNumber(e.endTime)
         ) {
+          this.renderConcurrentEvent(e);
           available = false;
           break;
         } else if (
           toNumber(startTime) > toNumber(e.startTime) &&
           toNumber(endTime) < toNumber(e.endTime)
         ) {
+          this.renderConcurrentEvent(e);
           available = false;
           break;
         }
@@ -46,6 +49,16 @@ class EventForm extends React.Component {
     }
 
     return available;
+  };
+
+  renderConcurrentEvent = event => {
+    document.querySelector("#concurrentEvent").innerHTML =
+      `Você já possui um compromisso esse horário<br>` +
+      `<strong>Evento:</strong> ${event.description}<br>` +
+      `<strong>Categoria:</strong> ${event.category}<br>` +
+      `<strong>Dia:</strong> ${event.date}<br>` +
+      `<strong>Hora de início:</strong> ${event.startTime}<br>` +
+      `<strong>Hora de término:</strong> ${event.endTime}<br>`;
   };
 
   renderError = ({ error, touched }) => {
@@ -127,10 +140,8 @@ class EventForm extends React.Component {
 
   onSubmit = formProps => {
     if (!this.isAvailable(formProps)) {
-      console.log("Not Available!");
       return;
     }
-    // console.log("Is Valid");
     this.props.onSubmit(formProps);
   };
 
@@ -142,13 +153,15 @@ class EventForm extends React.Component {
           <Field name="category" component={this.eventCategory} />
         </div>
 
-        <div className="form-row mb-3">
+        <div className="form-row mb-1">
           <Field name="date" component={this.eventDate} />
           <Field name="startTime" component={this.eventTimeStart} />
           <Field name="endTime" component={this.eventTimeEnd} />
         </div>
 
-        <button type="submit" className="btn btn-primary">
+        <div id="concurrentEvent"></div>
+
+        <button type="submit" className="btn btn-primary mt-2">
           {this.props.buttonText}
         </button>
       </form>
