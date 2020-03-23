@@ -30,6 +30,7 @@ class EventEdit extends React.Component {
               "startTime",
               "endTime"
             )}
+            eventId={this.props.event.id}
             buttonText="Editar"
             onSubmit={this.onSubmit}
           />

@@ -21,6 +21,7 @@ class EventForm extends React.Component {
 
     for (let i = 0; i < this.props.events.length; i++) {
       const e = this.props.events[i];
+      if (e.id === this.props.eventId) continue;
       if (date === e.date) {
         if (
           toNumber(startTime) < toNumber(e.startTime) &&
@@ -156,6 +157,7 @@ class EventForm extends React.Component {
 }
 
 const validate = formValues => {
+  const { description, date, startTime, endTime } = formValues;
   const errors = {};
 
   const toNumber = time => {
@@ -163,25 +165,25 @@ const validate = formValues => {
     return parseFloat(parseInt(temp[0]) + parseInt(temp[1]) / 60);
   };
 
-  if (formValues.description == null || !formValues.description.trim()) {
+  if (description == null || !description.trim()) {
     errors.description = "Você deve inserir uma descrição";
   }
 
-  if (formValues.date == null || !formValues.date.trim()) {
+  if (date == null || !date.trim()) {
     errors.date = "Você deve inserir uma data";
   }
 
-  if (formValues.startTime == null || !formValues.startTime.trim()) {
+  if (startTime == null || !startTime.trim()) {
     errors.startTime = "Você deve inserir uma hora inicial";
   }
 
-  if (formValues.startTime !== undefined && formValues.endTime !== undefined) {
-    if (toNumber(formValues.startTime) >= toNumber(formValues.endTime)) {
+  if (startTime !== undefined && endTime !== undefined) {
+    if (toNumber(startTime) >= toNumber(endTime)) {
       errors.startTime = "Hora inicial deve ser menor que a final";
     }
   }
 
-  if (formValues.endTime == null || !formValues.endTime.trim()) {
+  if (endTime == null || !endTime.trim()) {
     errors.endTime = "Você deve inserir uma hora final";
   }
 
