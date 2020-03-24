@@ -64,8 +64,17 @@ class SignUpPage extends React.Component {
     );
   };
 
+  renderNotUser = () => {
+    document.querySelector("#userExists").innerHTML =
+      "Este e-mail já está cadastrado!";
+  };
+
   onSubmit = async (formProps, dispatch) => {
-    await dispatch(createUser(formProps));
+    const response = await dispatch(createUser(formProps));
+    if (!response) {
+      this.renderNotUser();
+      return;
+    }
     this.props.history.push("/auth/signin");
     dispatch(reset("signUpForm"));
   };
@@ -79,6 +88,9 @@ class SignUpPage extends React.Component {
             <Field name="email" component={this.renderEmailInput} />
             <Field name="userName" component={this.renderUsernameInput} />
             <Field name="password" component={this.renderPasswordInput} />
+
+            <div id="userExists" className="mb-3"></div>
+
             <button type="submit" className="btn btn-primary">
               Cadastre
             </button>

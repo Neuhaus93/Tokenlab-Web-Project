@@ -50,6 +50,14 @@ export const fetchEvents = () => async (dispatch, getState) => {
  */
 
 export const createUser = formValues => async dispatch => {
+  formValues.email = formValues.email.toLowerCase();
+
+  let users = await db.get("/users");
+  users = users.data;
+  if (users.filter(user => user.email === formValues.email).length !== 0) {
+    return false;
+  }
+
   const response = await db.post("/users", {
     ...formValues
   });
@@ -58,6 +66,8 @@ export const createUser = formValues => async dispatch => {
     type: ActionTypes.CREATE_USER,
     payload: response.data
   });
+
+  return true;
 };
 
 export const fetchUsers = () => async dispatch => {
