@@ -47,3 +47,21 @@ Demais bibliotecas:
 - redux-form
 - redux-thunk
 
+
+
+## Backend
+
+O backend foi realizado com o auxílio da bibliteca json-server (https://github.com/typicode/json-server), o que proporcionou uma solução rápida para testar o produto com uma arquitetura REST. A comunicação entre o backend e o frontend foi realizada com a biblioteca **axios**. 
+
+
+
+### Funcionalidades extras
+
+1. O aplicativo não permite múltiplos usuários com o mesmo e-mail;
+2. Página um pouco diferente caso não exista nenhum evento criado;
+3. Nome do usuário logado no cabeçalho;
+4. Não permite hora de início maior que hora de término;
+5. Não permite sobreposição de eventos;
+6. O botão de marca no cabeçalho redireciona de maneira diferente caso o usuário esteja logado ou não;
+7. Não é possível navegar para a página de criação, edição ou listagem de eventos caso não exista um usuário logado;
+8. Tooltip no ícone do evento mostrando a categoria ao sobrevoar o mouse.
