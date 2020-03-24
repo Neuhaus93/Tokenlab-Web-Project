@@ -5,7 +5,19 @@ import { connect } from "react-redux";
 import { createUser } from "../../actions";
 
 class SignUpPage extends React.Component {
-  renderEmailInput = ({ input }) => {
+  renderError = ({ error, touched }) => {
+    if (touched && error) {
+      return (
+        <div>
+          <em style={{ color: "red", marginLeft: "5px", fontSize: "0.9rem" }}>
+            {error}
+          </em>
+        </div>
+      );
+    }
+  };
+
+  renderEmailInput = ({ input, meta }) => {
     return (
       <div className="form-group">
         <label>Email</label>
@@ -13,28 +25,31 @@ class SignUpPage extends React.Component {
           {...input}
           type="email"
           className="form-control"
-          id="exampleInputEmail1"
+          autoComplete="off"
           aria-describedby="emailHelp"
-          placeholder="Insira email"
+          placeholder="Insira um e-mail"
         />
+        {this.renderError(meta)}
       </div>
     );
   };
 
-  renderUsernameInput = ({ input }) => {
+  renderUsernameInput = ({ input, meta }) => {
     return (
       <div className="form-group">
         <label>Usuario</label>
         <input
           {...input}
           className="form-control"
-          placeholder="Insira nome do usuário"
+          autoComplete="off"
+          placeholder="Insira um nome do usuário"
         />
+        {this.renderError(meta)}
       </div>
     );
   };
 
-  renderPasswordInput = ({ input }) => {
+  renderPasswordInput = ({ input, meta }) => {
     return (
       <div className="form-group mb-3">
         <label>Senha</label>
@@ -42,29 +57,14 @@ class SignUpPage extends React.Component {
           {...input}
           type="password"
           className="form-control"
-          id="exampleInputPassword1"
           placeholder="Senha"
         />
+        {this.renderError(meta)}
       </div>
     );
   };
 
-  isValid(formProps) {
-    const isNotValid =
-      formProps.email == null ||
-      !formProps.email.trim() ||
-      formProps.userName == null ||
-      !formProps.userName.trim() ||
-      formProps.password == null ||
-      !formProps.password.trim();
-
-    return !isNotValid;
-  }
-
   onSubmit = async (formProps, dispatch) => {
-    if (!this.isValid) return;
-    console.log(formProps);
-
     await dispatch(createUser(formProps));
     this.props.history.push("/auth/signin");
     dispatch(reset("signUpForm"));
@@ -89,6 +89,26 @@ class SignUpPage extends React.Component {
   }
 }
 
+const validate = formValues => {
+  const { email, userName, password } = formValues;
+  const errors = {};
+
+  if (email == null || !email.trim()) {
+    errors.email = "Você deve inserir um e-mail";
+  }
+
+  if (userName == null || !userName.trim()) {
+    errors.userName = "Você deve inserir um nome de usuário";
+  }
+
+  if (password == null || !password.trim()) {
+    errors.password = "Você deve inserir um password";
+  }
+
+  return errors;
+};
+
 export default reduxForm({
-  form: "signUpForm"
+  form: "signUpForm",
+  validate
 })(connect(null, { createUser })(SignUpPage));
